@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- package com.wenjelly.wenjellyojbackendmicroservice.demos.nacosdiscoveryconsumer;
+package com.wenjelly.wenjellyojbackendmicroservice.demos.nacosdiscoveryconsumer;
 
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Configuration;
