@@ -1,4 +1,4 @@
-package com.wenjelly.wenjellyojbackendserviceclient.service;
+package com.wenjelly.wenjellyojbackendquestionservice.service;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -10,9 +10,6 @@ import com.wenjelly.wenjellyojbacjendmodel.model.entity.QuestionSubmit;
 import com.wenjelly.wenjellyojbacjendmodel.model.entity.User;
 import com.wenjelly.wenjellyojbacjendmodel.model.vo.QuestionSubmitVO;
 
-/**
- * @description 针对表【question_submit(题目提交表)】的数据库操作Service
- */
 public interface QuestionSubmitService extends IService<QuestionSubmit> {
     /**
      * 题目提交

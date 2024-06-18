@@ -15,8 +15,7 @@ import com.wenjelly.wenjellyojbackendjudgeservice.codesandbox.CodeSandBox;
 import com.wenjelly.wenjellyojbackendjudgeservice.codesandbox.CodeSandBoxFactory;
 import com.wenjelly.wenjellyojbackendjudgeservice.codesandbox.CodeSandBoxProxy;
 import com.wenjelly.wenjellyojbackendjudgeservice.strategy.JudgeContext;
-import com.wenjelly.wenjellyojbackendserviceclient.service.QuestionService;
-import com.wenjelly.wenjellyojbackendserviceclient.service.QuestionSubmitService;
+import com.wenjelly.wenjellyojbackendserviceclient.service.QuestionFileClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -28,9 +27,7 @@ import java.util.stream.Collectors;
 public class JudgeServiceImpl implements JudgeService {
 
     @Resource
-    private QuestionService questionService;
-    @Resource
-    private QuestionSubmitService questionSubmitService;
+    private QuestionFileClient questionFileClient;
     @Resource
     private JudgeManage judgeManage;
 
@@ -43,7 +40,7 @@ public class JudgeServiceImpl implements JudgeService {
     @Override
     public QuestionSubmit doJudge(long questionSubmitId) {
         // 1. 传入题目的提交id，获取到对应的题目、提交信息（包含代码、编程语言）
-        QuestionSubmit questionSubmit = questionSubmitService.getById(questionSubmitId);
+        QuestionSubmit questionSubmit = questionFileClient.getQuestionSubmitById(questionSubmitId);
 
         // 如果提交不存在，抛异常
         if (questionSubmit == null) {
@@ -51,7 +48,7 @@ public class JudgeServiceImpl implements JudgeService {
         }
         // 根据提交id获取题目
         Long questionId = questionSubmit.getQuestionId();
-        Question question = questionService.getById(questionId);
+        Question question = questionFileClient.getQuestionById(questionId);
 
         // 如果题目不存在，抛异常
         if (question == null) {
@@ -70,7 +67,7 @@ public class JudgeServiceImpl implements JudgeService {
         // 更改判题状态，设置为判题中----1
         questionSubmitUpdate.setStatus(QuestionSubmitStatusEnum.RUNNING.getValue());
         // 修改数据库
-        boolean update = questionSubmitService.updateById(questionSubmitUpdate);
+        boolean update = questionFileClient.updateById(questionSubmitUpdate);
         // 修改失败
         if (!update) {
             throw new BusinessException(ErrorCode.SYSTEM_ERROR, "题目状态更新错误");
@@ -153,13 +150,13 @@ public class JudgeServiceImpl implements JudgeService {
         // 设置将判题结果信息
         questionSubmitUpdate.setJudgeInfo(JSONUtil.toJsonStr(judgeInfo));
         // 最后一步，修改信息，并更新数据库
-        update = questionSubmitService.updateById(questionSubmitUpdate);
+        update = questionFileClient.updateById(questionSubmitUpdate);
         if (!update) {
             // 这里可能因为异步传输的原因，好像没有输出throw，尝试用控制台输出
             System.out.println(ErrorCode.SYSTEM_ERROR.getMessage());
             throw new BusinessException(ErrorCode.SYSTEM_ERROR, "题目状态更新错误");
         }
-        QuestionSubmit questionSubmitResult = questionSubmitService.getById(questionId);
+        QuestionSubmit questionSubmitResult = questionFileClient.getQuestionSubmitById(questionId);
         return questionSubmitResult;
     }
 }

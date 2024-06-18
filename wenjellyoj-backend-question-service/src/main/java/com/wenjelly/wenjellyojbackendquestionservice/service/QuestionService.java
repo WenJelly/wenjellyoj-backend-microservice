@@ -1,5 +1,4 @@
-package com.wenjelly.wenjellyojbackendserviceclient.service;
-
+package com.wenjelly.wenjellyojbackendquestionservice.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -10,9 +9,6 @@ import com.wenjelly.wenjellyojbacjendmodel.model.vo.QuestionVO;
 
 import javax.servlet.http.HttpServletRequest;
 
-/**
- * @description 针对表【question(题目)】的数据库操作Service
- */
 public interface QuestionService extends IService<Question> {
 
     /**

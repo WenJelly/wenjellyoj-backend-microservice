@@ -19,9 +19,9 @@ import com.wenjelly.wenjellyojbackendcommon.common.ResultUtils;
 import com.wenjelly.wenjellyojbackendcommon.constant.UserConstant;
 import com.wenjelly.wenjellyojbackendcommon.exception.BusinessException;
 import com.wenjelly.wenjellyojbackendcommon.exception.ThrowUtils;
-import com.wenjelly.wenjellyojbackendserviceclient.service.QuestionService;
-import com.wenjelly.wenjellyojbackendserviceclient.service.QuestionSubmitService;
-import com.wenjelly.wenjellyojbackendserviceclient.service.UserService;
+import com.wenjelly.wenjellyojbackendquestionservice.service.QuestionService;
+import com.wenjelly.wenjellyojbackendquestionservice.service.QuestionSubmitService;
+import com.wenjelly.wenjellyojbackendserviceclient.service.UserFeignClient;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
@@ -34,7 +34,7 @@ import java.util.List;
  * 题目接口
  */
 @RestController
-@RequestMapping("/question")
+@RequestMapping("/")
 @Slf4j
 public class QuestionController {
 
@@ -42,7 +42,7 @@ public class QuestionController {
     @Resource
     private QuestionService questionService;
     @Resource
-    private UserService userService;
+    private UserFeignClient userFeignClient;
     @Resource
     private QuestionSubmitService questionSubmitService;
 
@@ -76,7 +76,7 @@ public class QuestionController {
         }
 
         questionService.validQuestion(question, true);
-        User loginUser = userService.getLoginUser(request);
+        User loginUser = userFeignClient.getLoginUser(request);
         question.setUserId(loginUser.getId());
         question.setFavourNum(0);
         question.setThumbNum(0);
@@ -98,13 +98,13 @@ public class QuestionController {
         if (deleteRequest == null || deleteRequest.getId() <= 0) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
-        User user = userService.getLoginUser(request);
+        User user = userFeignClient.getLoginUser(request);
         long id = deleteRequest.getId();
         // 判断是否存在
         Question oldQuestion = questionService.getById(id);
         ThrowUtils.throwIf(oldQuestion == null, ErrorCode.NOT_FOUND_ERROR);
         // 仅本人或管理员可删除
-        if (!oldQuestion.getUserId().equals(user.getId()) && !userService.isAdmin(request)) {
+        if (!oldQuestion.getUserId().equals(user.getId()) && !userFeignClient.isAdmin(user)) {
             throw new BusinessException(ErrorCode.NO_AUTH_ERROR);
         }
         boolean b = questionService.removeById(id);
@@ -155,9 +155,9 @@ public class QuestionController {
             throw new BusinessException(ErrorCode.NOT_FOUND_ERROR);
         }
         // 获取访问题目的人的信息
-        User loginUser = userService.getLoginUser(request);
+        User loginUser = userFeignClient.getLoginUser(request);
         // 不过不是题目创建者的id或者不是管理员，则不能查看这条信息
-        if (!question.getId().equals(loginUser.getId()) || !userService.isAdmin(loginUser)) {
+        if (!question.getId().equals(loginUser.getId()) || !userFeignClient.isAdmin(loginUser)) {
             // 抛异常
             new BusinessException(ErrorCode.NO_AUTH_ERROR);
         }
@@ -214,7 +214,7 @@ public class QuestionController {
         if (questionQueryRequest == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
-        User loginUser = userService.getLoginUser(request);
+        User loginUser = userFeignClient.getLoginUser(request);
         questionQueryRequest.setUserId(loginUser.getId());
         long current = questionQueryRequest.getCurrent();
         long size = questionQueryRequest.getPageSize();
@@ -264,13 +264,13 @@ public class QuestionController {
         }
         // 参数校验
         questionService.validQuestion(question, false);
-        User loginUser = userService.getLoginUser(request);
+        User loginUser = userFeignClient.getLoginUser(request);
         long id = questionEditRequest.getId();
         // 判断是否存在
         Question oldQuestion = questionService.getById(id);
         ThrowUtils.throwIf(oldQuestion == null, ErrorCode.NOT_FOUND_ERROR);
         // 仅本人或管理员可编辑
-        if (!oldQuestion.getUserId().equals(loginUser.getId()) && !userService.isAdmin(loginUser)) {
+        if (!oldQuestion.getUserId().equals(loginUser.getId()) && !userFeignClient.isAdmin(loginUser)) {
             throw new BusinessException(ErrorCode.NO_AUTH_ERROR);
         }
         boolean result = questionService.updateById(question);
@@ -310,7 +310,7 @@ public class QuestionController {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
 
-        final User loginUser = userService.getLoginUser(request);
+        final User loginUser = userFeignClient.getLoginUser(request);
         long questionId = questionAddRequest.getQuestionId();
         long questionSubmitId = questionSubmitService.doQuestionSubmit(questionAddRequest, loginUser);
         return ResultUtils.success(questionSubmitId);
@@ -331,7 +331,7 @@ public class QuestionController {
         // 从数据库中查询到了原始的题目分页信息
         Page<QuestionSubmit> questionSubmitPage = questionSubmitService.page(new Page<>(current, size),
                 questionSubmitService.getQueryWrapper(questionSubmitQueryRequest));
-        User loginUser = userService.getLoginUser(request);
+        User loginUser = userFeignClient.getLoginUser(request);
         // 返回脱敏信息
         return ResultUtils.success(questionSubmitService.getQuestionSubmitVOPage(questionSubmitPage, loginUser));
     }

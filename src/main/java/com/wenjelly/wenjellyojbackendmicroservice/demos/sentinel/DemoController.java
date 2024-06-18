@@ -14,6 +14,7 @@
 
 package com.wenjelly.wenjellyojbackendmicroservice.demos.sentinel;
 
+import com.alibaba.cloud.demo.sentinel.api.FooService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,9 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.alibaba.csp.sentinel.demo.dubbo.FooService;
-import com.alibaba.csp.sentinel.demo.service.DemoService;
-import org.apache.dubbo.config.annotation.Reference;
+
 
 /**
  * @author Eric Zhao

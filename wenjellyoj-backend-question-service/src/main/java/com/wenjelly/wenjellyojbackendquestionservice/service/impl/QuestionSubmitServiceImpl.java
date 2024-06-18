@@ -22,10 +22,10 @@ import com.wenjelly.wenjellyojbackendcommon.constant.CommonConstant;
 import com.wenjelly.wenjellyojbackendcommon.exception.BusinessException;
 import com.wenjelly.wenjellyojbackendcommon.utils.SqlUtils;
 import com.wenjelly.wenjellyojbackendquestionservice.mapper.QuestionSubmitMapper;
-import com.wenjelly.wenjellyojbackendserviceclient.service.JudgeService;
-import com.wenjelly.wenjellyojbackendserviceclient.service.QuestionService;
-import com.wenjelly.wenjellyojbackendserviceclient.service.QuestionSubmitService;
-import com.wenjelly.wenjellyojbackendserviceclient.service.UserService;
+import com.wenjelly.wenjellyojbackendquestionservice.service.QuestionService;
+import com.wenjelly.wenjellyojbackendquestionservice.service.QuestionSubmitService;
+import com.wenjelly.wenjellyojbackendserviceclient.service.JudgeFeignClient;
+import com.wenjelly.wenjellyojbackendserviceclient.service.UserFeignClient;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
@@ -41,11 +41,11 @@ public class QuestionSubmitServiceImpl extends ServiceImpl<QuestionSubmitMapper,
     @Resource
     private QuestionService questionService;
     @Resource
-    private UserService userService;
+    private UserFeignClient userFeignClient;
     @Resource
     // 懒加载注解，不知道有啥用
     @Lazy
-    private JudgeService judgeService;
+    private JudgeFeignClient judgeFeignClient;
 
     /**
      * 题目提交
@@ -105,7 +105,7 @@ public class QuestionSubmitServiceImpl extends ServiceImpl<QuestionSubmitMapper,
         // 异步执行判题服务模块
 
         CompletableFuture.runAsync(() -> {
-            judgeService.doJudge(questionSubmitId);
+            judgeFeignClient.doJudge(questionSubmitId);
         });
 
 //        CompletableFuture<Void> voidCompletableFuture = CompletableFuture.runAsync(() -> {
@@ -169,7 +169,7 @@ public class QuestionSubmitServiceImpl extends ServiceImpl<QuestionSubmitMapper,
         QuestionVO questionVO = QuestionVO.objToVo(question);
         // 得到提交这条记录的具体用户信息
         Long userId1 = questionSubmit.getUserId();
-        User user = userService.getById(userId1);
+        User user = userFeignClient.getById(userId1);
         UserVO userVO = UserVO.objToVo(user);
 
 
@@ -177,7 +177,7 @@ public class QuestionSubmitServiceImpl extends ServiceImpl<QuestionSubmitMapper,
         // 脱敏：仅本人和管理员可以看见（提交userId 和登录用户 id 不同）提交的代码
         long userId = loginUser.getId();
         // 处理脱敏
-        if (userId != questionSubmit.getUserId() && userService.isAdmin(loginUser)) {
+        if (userId != questionSubmit.getUserId() && userFeignClient.isAdmin(loginUser)) {
             questionSubmitVO.setCode(null);
         }
 

@@ -15,7 +15,7 @@ import com.wenjelly.wenjellyojbackendcommon.common.ResultUtils;
 import com.wenjelly.wenjellyojbackendcommon.constant.UserConstant;
 import com.wenjelly.wenjellyojbackendcommon.exception.BusinessException;
 import com.wenjelly.wenjellyojbackendcommon.exception.ThrowUtils;
-import com.wenjelly.wenjellyojbackendserviceclient.service.UserService;
+import com.wenjelly.wenjellyojbackenduserservice.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +28,7 @@ import java.util.List;
  * 用户接口
  */
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/")
 @Slf4j
 public class UserController {
 
