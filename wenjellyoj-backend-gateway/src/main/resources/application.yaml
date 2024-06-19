@@ -1,7 +1,25 @@
 spring:
+  application:
+    name: wenjellyoj-backend-gateway
+  main:
+    web-application-type: reactive
   cloud:
     nacos:
       discovery:
         service-addr: 127.0.0.1:8848
-  application:
-    name: wenjellyoj-backend-gateway
+    gateway:
+      routes:
+        - id: wenjellyoj-backend-user-service
+          uri: lb://wenjellyoj-backend-user-service
+          predicates:
+            - Path=/api/user/**
+        - id: wenjellyoj-backend-question-service
+          uri: lb://wenjellyoj-backend-question-service
+          predicates:
+            - Path=/api/question/**
+        - id: wenjellyoj-backend-judge-service
+          uri: lb://wenjellyoj-backend-judge-service
+          predicates:
+            - Path=/api/judge/**
+server:
+  port: 8081

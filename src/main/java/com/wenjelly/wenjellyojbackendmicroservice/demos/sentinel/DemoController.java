@@ -31,7 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/demo")
 public class DemoController {
 
-    @Reference
+//    @Reference
     private FooService fooService;
 
     @Autowired

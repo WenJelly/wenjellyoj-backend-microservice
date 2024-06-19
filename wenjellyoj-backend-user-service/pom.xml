@@ -9,8 +9,8 @@
     </parent>
     <artifactId>wenjellyoj-backend-user-service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>wenjellyoj-backend-question-service</name>
-    <description>wenjellyoj-backend-question-service</description>
+    <name>wenjellyoj-backend-user-service</name>
+    <description>wenjellyoj-backend-user-service</description>
     <properties>
         <java.version>17</java.version>
     </properties>
