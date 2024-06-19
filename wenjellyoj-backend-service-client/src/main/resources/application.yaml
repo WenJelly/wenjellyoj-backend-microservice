@@ -1,6 +1,7 @@
-cloud:
+spring:
   application:
     name: wenjellyoj-backend-service-client
-  nacos:
-    discovery:
-      service-addr: 127.0.0.1:8848
+  cloud:
+    nacos:
+      discovery:
+        service-addr: 127.0.0.1:8848
