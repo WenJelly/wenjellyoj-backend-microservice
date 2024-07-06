@@ -1,8 +1,9 @@
-package com.wenjelly.wenjellyojbackendcommon.exception;
+package com.wenjelly.wenjellyojbackendquestionservice.exception;
 
 import com.wenjelly.wenjellyojbackendcommon.common.BaseResponse;
 import com.wenjelly.wenjellyojbackendcommon.common.ErrorCode;
 import com.wenjelly.wenjellyojbackendcommon.common.ResultUtils;
+import com.wenjelly.wenjellyojbackendcommon.exception.BusinessException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;

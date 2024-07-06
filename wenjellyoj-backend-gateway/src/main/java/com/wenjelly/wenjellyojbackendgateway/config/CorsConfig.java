@@ -1,12 +1,11 @@
 package com.wenjelly.wenjellyojbackendgateway.config;
 
-/*
+/**
  * @time 2024/6/20 10:25
  * @package com.wenjelly.wenjellyojbackendgateway.config
  * @project wenjellyoj-backend-microservice
  * @author WenJelly
  */
-
 
 
 import org.springframework.context.annotation.Bean;
