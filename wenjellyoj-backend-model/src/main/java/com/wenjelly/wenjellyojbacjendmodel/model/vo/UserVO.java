@@ -1,6 +1,8 @@
 package com.wenjelly.wenjellyojbacjendmodel.model.vo;
 
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.wenjelly.wenjellyojbacjendmodel.model.entity.User;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
@@ -21,6 +23,7 @@ public class UserVO implements Serializable {
     /**
      * id
      */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
     /**
      * 用户昵称
