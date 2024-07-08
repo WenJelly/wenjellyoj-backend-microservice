@@ -22,6 +22,7 @@ import com.wenjelly.wenjellyojbackendcommon.exception.ThrowUtils;
 import com.wenjelly.wenjellyojbackendquestionservice.service.QuestionService;
 import com.wenjelly.wenjellyojbackendquestionservice.service.QuestionSubmitService;
 import com.wenjelly.wenjellyojbackendserviceclient.service.UserFeignClient;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
@@ -55,6 +56,7 @@ public class QuestionController {
      * @param request
      * @return
      */
+    @ApiOperation("添加题目")
     @PostMapping("/add")
     public BaseResponse<Long> addQuestion(@RequestBody QuestionAddRequest questionAddRequest, HttpServletRequest request) {
         if (questionAddRequest == null) {

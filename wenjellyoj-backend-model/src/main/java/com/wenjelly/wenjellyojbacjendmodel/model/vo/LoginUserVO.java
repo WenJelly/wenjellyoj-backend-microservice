@@ -20,7 +20,6 @@ public class LoginUserVO implements Serializable {
     /**
      * 用户 id
      */
-    @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
     /**
      * 用户昵称

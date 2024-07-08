@@ -28,7 +28,7 @@ public class QuestionVO implements Serializable {
     /**
      * id
      */
-    @JsonSerialize(using = ToStringSerializer.class)
+//    @JsonSerialize(using = ToStringSerializer.class)
     @TableId(type = IdType.AUTO)
     private Long id;
     /**

@@ -23,7 +23,6 @@ public class UserVO implements Serializable {
     /**
      * id
      */
-    @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
     /**
      * 用户昵称

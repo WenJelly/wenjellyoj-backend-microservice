@@ -21,7 +21,6 @@ public class Question implements Serializable {
     /**
      * id
      */
-    @JsonSerialize(using = ToStringSerializer.class)
     @TableId(type = IdType.ASSIGN_ID)
     private Long id;
     /**
