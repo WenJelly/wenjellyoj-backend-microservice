@@ -10,6 +10,7 @@ package com.wenjelly.wenjellyojbackendjudgeservice.controller.inner;
 import com.wenjelly.wenjellyojbacjendmodel.model.entity.QuestionSubmit;
 import com.wenjelly.wenjellyojbackendjudgeservice.JudgeService;
 import com.wenjelly.wenjellyojbackendserviceclient.service.JudgeFeignClient;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,6 +27,7 @@ public class InnerJudgeController implements JudgeFeignClient {
     private JudgeService judgeService;
 
     @Override
+    @GetMapping("/do")
     public QuestionSubmit doJudge(long questionSubmitId) {
         return judgeService.doJudge(questionSubmitId);
     }

@@ -313,7 +313,6 @@ public class QuestionController {
         }
 
         final User loginUser = userFeignClient.getLoginUser(request);
-        long questionId = questionAddRequest.getQuestionId();
         long questionSubmitId = questionSubmitService.doQuestionSubmit(questionAddRequest, loginUser);
         return ResultUtils.success(questionSubmitId);
     }

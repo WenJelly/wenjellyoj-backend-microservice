@@ -21,17 +21,15 @@ import com.wenjelly.wenjellyojbackendcommon.common.ErrorCode;
 import com.wenjelly.wenjellyojbackendcommon.constant.CommonConstant;
 import com.wenjelly.wenjellyojbackendcommon.exception.BusinessException;
 import com.wenjelly.wenjellyojbackendcommon.utils.SqlUtils;
+import com.wenjelly.wenjellyojbackendquestionservice.RabbitMQ.MessageSend;
 import com.wenjelly.wenjellyojbackendquestionservice.mapper.QuestionSubmitMapper;
 import com.wenjelly.wenjellyojbackendquestionservice.service.QuestionService;
 import com.wenjelly.wenjellyojbackendquestionservice.service.QuestionSubmitService;
-import com.wenjelly.wenjellyojbackendserviceclient.service.JudgeFeignClient;
 import com.wenjelly.wenjellyojbackendserviceclient.service.UserFeignClient;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 @Service
@@ -43,15 +41,13 @@ public class QuestionSubmitServiceImpl extends ServiceImpl<QuestionSubmitMapper,
     @Resource
     private UserFeignClient userFeignClient;
     @Resource
-    // 懒加载注解，不知道有啥用
-    @Lazy
-    private JudgeFeignClient judgeFeignClient;
+    private MessageSend messageSend;
 
     /**
      * 题目提交
      *
-     * @param questionSubmitAddRequest
-     * @param loginUser
+     * @param questionSubmitAddRequest 题目提交请求对象
+     * @param loginUser                当前登录用户
      * @return 提交记录的id
      */
     @Override
@@ -102,11 +98,13 @@ public class QuestionSubmitServiceImpl extends ServiceImpl<QuestionSubmitMapper,
 
         // 获取提交记录id用来传递给判题服务模块
         Long questionSubmitId = questionSubmit.getId();
-        // 异步执行判题服务模块
 
-        CompletableFuture.runAsync(() -> {
-            judgeFeignClient.doJudge(questionSubmitId);
-        });
+        messageSend.doMessage(questionSubmitId);
+
+        // 异步执行判题服务模块
+//        CompletableFuture.runAsync(() -> {
+//            judgeFeignClient.doJudge(questionSubmitId);
+//        });
 
 //        CompletableFuture<Void> voidCompletableFuture = CompletableFuture.runAsync(() -> {
 //            judgeService.doJudge(questionSubmitId);
@@ -124,7 +122,6 @@ public class QuestionSubmitServiceImpl extends ServiceImpl<QuestionSubmitMapper,
 //            questionSubmit.setStatus(QuestionSubmitStatusEnum.FAILED.getValue());
 //        }
 
-        // todo 这里应该返回一个提交记录。
         return questionSubmitId;
     }
 
@@ -156,7 +153,7 @@ public class QuestionSubmitServiceImpl extends ServiceImpl<QuestionSubmitMapper,
         queryWrapper.orderBy(SqlUtils.validSortField(sortField), sortOrder.equals(CommonConstant.SORT_ORDER_ASC),
                 sortField);
         System.out.println("========================================================");
-        System.out.println(queryWrapper.toString());
+        System.out.println(queryWrapper);
         return queryWrapper;
     }
 
@@ -200,7 +197,7 @@ public class QuestionSubmitServiceImpl extends ServiceImpl<QuestionSubmitMapper,
                 .collect(Collectors.toList());
 
         System.out.println("test1===================================");
-        System.out.println(questionSubmitVOList.toString());
+        System.out.println(questionSubmitVOList);
         questionSubmitSubmitVOPage.setRecords(questionSubmitVOList);
         return questionSubmitSubmitVOPage;
     }

@@ -8,7 +8,6 @@ package com.wenjelly.wenjellyojbackendgateway.filter;
  */
 
 import cn.hutool.core.text.AntPathMatcher;
-import com.alibaba.excel.event.Order;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
@@ -24,7 +23,7 @@ import java.nio.charset.StandardCharsets;
 
 public class GlobalAuthFilter implements GlobalFilter, Ordered {
 
-    private AntPathMatcher antPathMatcher = new AntPathMatcher();
+    private final AntPathMatcher antPathMatcher = new AntPathMatcher();
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
@@ -47,6 +46,7 @@ public class GlobalAuthFilter implements GlobalFilter, Ordered {
 
     /**
      * 提高这个拦截器的优先级
+     *
      * @return
      */
     @Override
