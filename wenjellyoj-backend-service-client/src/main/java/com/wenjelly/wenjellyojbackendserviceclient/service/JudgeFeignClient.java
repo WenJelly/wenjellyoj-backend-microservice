@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  * 请求转发 -> 判题模块
  * 负责将接收到的接口使用请求转发给 判题模块 / 内部处理
  */
-@FeignClient(name = "wenjellyoj-backend-judge-service", path = "/api/do/inner")
+@FeignClient(name = "wenjellyoj-backend-judge-service", path = "/api/judge/inner")
 public interface JudgeFeignClient {
 
     @GetMapping("/do")

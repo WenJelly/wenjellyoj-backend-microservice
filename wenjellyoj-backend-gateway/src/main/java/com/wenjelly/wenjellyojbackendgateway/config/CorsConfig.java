@@ -15,7 +15,7 @@ import org.springframework.web.cors.reactive.CorsWebFilter;
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 import org.springframework.web.util.pattern.PathPatternParser;
 
-import java.util.Arrays;
+import java.util.Collections;
 
 /**
  * 处理跨域
@@ -30,7 +30,7 @@ public class CorsConfig {
         // 是否允许证书（cookies）
         config.setAllowCredentials(true);
         // todo 修改问本地地址 / 线上地址
-        config.setAllowedOriginPatterns(Arrays.asList("*"));
+        config.setAllowedOriginPatterns(Collections.singletonList("*"));
         config.addAllowedHeader("*");
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource(new PathPatternParser());
         source.registerCorsConfiguration("/**", config);

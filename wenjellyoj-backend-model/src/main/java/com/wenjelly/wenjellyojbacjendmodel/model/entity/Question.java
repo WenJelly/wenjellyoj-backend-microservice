@@ -1,8 +1,6 @@
 package com.wenjelly.wenjellyojbacjendmodel.model.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -134,27 +132,26 @@ public class Question implements Serializable {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getClass().getSimpleName());
-        sb.append(" [");
-        sb.append("Hash = ").append(hashCode());
-        sb.append(", id=").append(id);
-        sb.append(", title=").append(title);
-        sb.append(", content=").append(content);
-        sb.append(", tags=").append(tags);
-        sb.append(", answer=").append(answer);
-        sb.append(", submitNum=").append(submitNum);
-        sb.append(", acceptedNum=").append(acceptedNum);
-        sb.append(", judgeCase=").append(judgeCase);
-        sb.append(", judgeConfig=").append(judgeConfig);
-        sb.append(", thumbNum=").append(thumbNum);
-        sb.append(", favourNum=").append(favourNum);
-        sb.append(", userId=").append(userId);
-        sb.append(", createTime=").append(createTime);
-        sb.append(", updateTime=").append(updateTime);
-        sb.append(", isDelete=").append(isDelete);
-        sb.append(", serialVersionUID=").append(serialVersionUID);
-        sb.append("]");
-        return sb.toString();
+        String sb = getClass().getSimpleName() +
+                " [" +
+                "Hash = " + hashCode() +
+                ", id=" + id +
+                ", title=" + title +
+                ", content=" + content +
+                ", tags=" + tags +
+                ", answer=" + answer +
+                ", submitNum=" + submitNum +
+                ", acceptedNum=" + acceptedNum +
+                ", judgeCase=" + judgeCase +
+                ", judgeConfig=" + judgeConfig +
+                ", thumbNum=" + thumbNum +
+                ", favourNum=" + favourNum +
+                ", userId=" + userId +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                ", isDelete=" + isDelete +
+                ", serialVersionUID=" + serialVersionUID +
+                "]";
+        return sb;
     }
 }

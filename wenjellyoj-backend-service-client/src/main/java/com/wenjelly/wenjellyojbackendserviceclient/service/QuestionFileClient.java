@@ -21,6 +21,7 @@ public interface QuestionFileClient {
 
     @GetMapping("/question_submit/get/id")
     QuestionSubmit getQuestionSubmitById(@RequestParam("questionSubmitId") long questionSubmitId);
+
     @PostMapping("/question_submit/update/id")
     boolean updateById(@RequestBody QuestionSubmit questionSubmit);
 

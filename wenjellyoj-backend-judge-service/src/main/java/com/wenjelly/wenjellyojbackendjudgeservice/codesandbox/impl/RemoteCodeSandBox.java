@@ -22,9 +22,9 @@ public class RemoteCodeSandBox implements CodeSandBox {
     @Override
     public ExecutedCodeResponse executedCode(ExecutedCodeRequest executeCodedRequest) {
         // 得到远程代码沙箱的响应url（目前跑在虚拟机上）
-        String url = "http://192.168.174.128:8090/executeCode";
-        // 如果时运行在本地的话
-//        String url = "http://localhost:8090/executeCode";
+//        String url = "http://192.168.174.128:8090/executeCode";
+        // 如果是运行在本地的话
+        String url = "http://localhost:8086/executeCode";
         // 将请求参数封装成JSON字符串
         String json = JSONUtil.toJsonStr(executeCodedRequest);
         // 发送响应
