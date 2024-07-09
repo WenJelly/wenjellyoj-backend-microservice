@@ -1,0 +1,54 @@
+version: '3'
+services:
+  wenjellyoj-backend-gateway:
+    container_name: wenjellyoj-backend-gateway
+    build:
+      context: ./wenjellyoj-backend-gateway
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"
+    networks:
+      - mynetwork
+
+  wenjellyoj-backend-user-service:
+    container_name: wenjellyoj-backend-user-service
+    build:
+      context: ./wenjellyoj-backend-user-service
+      dockerfile: Dockerfile
+    ports:
+      - "8082:8082"
+    networks:
+      - mynetwork
+    depends_on:
+      - wenjellyoj-backend-gateway
+
+  wenjellyoj-backend-question-service:
+    container_name: wenjellyoj-backend-question-service
+    build:
+      context: ./wenjellyoj-backend-question-service
+      dockerfile: Dockerfile
+    ports:
+      - "8083:8083"
+    networks:
+      - mynetwork
+    depends_on:
+      - wenjellyoj-backend-user-service
+      - wenjellyoj-backend-gateway
+
+  wenjellyoj-backend-judge-service:
+    container_name: wenjellyoj-backend-judge-service
+    build:
+      context: ./wenjellyoj-backend-judge-service
+      dockerfile: Dockerfile
+    ports:
+      - "8084:8084"
+    networks:
+      - mynetwork
+    depends_on:
+      - wenjellyoj-backend-user-service
+      - wenjellyoj-backend-question-service
+      - wenjellyoj-backend-gateway
+
+# 网络，不定义的话就是默认网络
+networks:
+  mynetwork:

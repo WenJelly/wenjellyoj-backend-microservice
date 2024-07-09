@@ -5,6 +5,9 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 
+/**
+ * 消息队列发送端
+ */
 @Component
 public class MessageSend {
 
@@ -23,8 +26,8 @@ public class MessageSend {
 
 
     public void doMessage(Long questionSubmitId) {
-        // 将题目id
-        String dateMessage = questionSubmitId.toString();
+        // 将题目id转化成字符串
+        String dateMessage = String.valueOf(questionSubmitId);
         rabbitTemplate.convertAndSend(EXCHANGE_NAME, ROUTING_KEY, dateMessage);
     }
 }

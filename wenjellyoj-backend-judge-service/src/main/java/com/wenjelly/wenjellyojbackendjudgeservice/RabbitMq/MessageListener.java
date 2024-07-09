@@ -22,18 +22,15 @@ import java.io.IOException;
 @Component
 public class MessageListener {
 
+    // 定义交换机常量
+    public static final String EXCHANGE_NAME = "exchange-code-box";
+    // 定义队列常量
+    public static final String QUEUE_NAME = "queue-code-box";
+    // 定义路由常量
+    public static final String ROUTING_KEY = "routing-key-code-box";
     private static final Logger log = LoggerFactory.getLogger(MessageListener.class);
     @Resource
     private JudgeFeignClient judgeFeignClient;
-
-    // 定义交换机常量
-    public static final String EXCHANGE_NAME = "exchange-code-box";
-
-    // 定义队列常量
-    public static final String QUEUE_NAME = "queue-code-box";
-
-    // 定义路由常量
-    public static final String ROUTING_KEY = "routing-key-code-box";
 
     // 通过注解来进行监听（监听+ 创建）
     @SneakyThrows
@@ -54,7 +51,8 @@ public class MessageListener {
             judgeFeignClient.doJudge(questionSubmitId);
             channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
         } catch (IOException e) {
-            channel.basicNack(message.getMessageProperties().getDeliveryTag(), false, false);
+            log.error("消息消费失败：{}", e.getMessage());
+//            channel.basicNack(message.getMessageProperties().getDeliveryTag(), false, false);
         }
 
 
