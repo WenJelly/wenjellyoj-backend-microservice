@@ -1,9 +1,9 @@
-spring:
-  application:
-    name: wenjellyoj-backend-service-client
-  cloud:
-    nacos:
-      discovery:
-        service-addr: 127.0.0.1:8848
-server:
-  port: 8085
+#spring:
+#  application:
+#    name: wenjellyoj-backend-service-client
+#  cloud:
+#    nacos:
+#      discovery:
+#        service-addr: 127.0.0.1:8848
+#server:
+#  port: 8085
